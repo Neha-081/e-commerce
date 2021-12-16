@@ -5,6 +5,10 @@ const bodyParser=require('body-parser')  //midleware library
 
  //app is a object that describes all the web functions a server can do
  const app=express();
+
+ //urlencoded-function within the library bodyparser which 
+//use for handling specific info that is coming as htnl form
+ app.use(bodyParser.urlencoded({extended:true}))
  app.get('/',(req,res)=>{
      res.send(`
      <div>
@@ -20,9 +24,8 @@ const bodyParser=require('body-parser')  //midleware library
 
  //data need to be parsed
  
-//urlencoded-function within the library bodyparser which 
-//use for handling specific info that is coming as htnl form
- app.post('/',bodyParser.urlencoded({extended:true}),(req,res)=>{
+
+ app.post('/',(req,res)=>{
  console.log(req.body);
    res.send('Account Created')
  });

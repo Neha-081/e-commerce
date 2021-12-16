@@ -58,10 +58,21 @@ async update(id,attrs){
     Object.assign(record,attrs)  //take all key value pairs from attrs and add them in record with existing keyvalue of that id
 await this.writeAall(records)
 }
+async getOneBy(filters){
+  const records=await this.getAll();
+  for(let record of records){  //for of-iterating thorugh array
+      let found=true;
+
+      for(let key in filters){   //for in-iterating through object
+     if(record[key]!==filters[key]){
+         found=false;
+     }
+    }
+    if(found){
+        return record;
+    }
+  }
+}
 } 
 
-const test=async()=>{
-    const repo=new UsersRepository('users.json');
-await repo.update('a2fc7ca5',{name:"maya"})
-}
-test();
+module.exports=new UsersRepository('users.json');

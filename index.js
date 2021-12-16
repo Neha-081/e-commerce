@@ -1,7 +1,7 @@
 const e = require('express');
 const express = require('express')
 const bodyParser=require('body-parser')  //midleware library
-
+const userRepo=require('./repositories/users')
 
  //app is a object that describes all the web functions a server can do
  const app=express();
@@ -25,9 +25,16 @@ const bodyParser=require('body-parser')  //midleware library
  //data need to be parsed
  
 
- app.post('/',(req,res)=>{
- console.log(req.body);
-   res.send('Account Created')
+ app.post('/',async(req,res)=>{
+ const {email,password,confirmPassword}=req.body;
+ const existingUser=await userRepo.getOneBy({email})  
+ if(existingUser){
+     return res.send('Email already exists!')
+ }
+ if(password!==confirmPassword){
+     return res.send('Passwords must match!')
+ }
+ res.send('Account Created')
  });
 
  app.listen(3000,()=>{

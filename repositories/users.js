@@ -1,5 +1,6 @@
 const fs = require('fs')
-const crypto=require('crypto')
+const crypto=require('crypto');
+const { timeStamp } = require('console');
 
 class UsersRepository{
     //constructor functions cannot be async in nature/js
@@ -38,12 +39,29 @@ randomId(){
     return crypto.randomBytes(4).toString('hex')
 
 }
+async getOne(id){   //find user by particular id
+  const records=await this.getAll();
+  return records.find(record=>record.id===id);
+}
+async delete(id){
+    const records=await this.getAll();
+    const filterRecords=records.filter(record=>record.id!==id);
+   await this.writeAall(filterRecords);
+}
+async update(id,attrs){
+    const records=await this.getAll();
+    const record = records.find(record=>record.id===id);
+    if(!record){
+        throw new Error(`Record with id ${id} not found`)
+    }
+
+    Object.assign(record,attrs)  //take all key value pairs from attrs and add them in record with existing keyvalue of that id
+await this.writeAall(records)
+}
 } 
 
 const test=async()=>{
     const repo=new UsersRepository('users.json');
-await repo.create({email:'neha@gmail.com',password:'neha'})
-    const users= await repo.getAll();
-console.log(users);
+await repo.update('a2fc7ca5',{name:"maya"})
 }
 test();

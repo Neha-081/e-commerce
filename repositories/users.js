@@ -1,6 +1,9 @@
 const fs = require('fs')
 const crypto=require('crypto');
 const { timeStamp } = require('console');
+const util=require('util')
+
+const scrypt=util.promisify(crypto.scrypt)  //returns a promise
 
 class UsersRepository{
     //constructor functions cannot be async in nature/js
@@ -24,14 +27,24 @@ async getAll(){
     })
     );
 }
-async create(attrs){        //object of data
+async create(attrs){        //object of data-{email:'',password:''}
  attrs.id=this.randomId();
 
+ //generating hash password
+  const salt=crypto.randomBytes(8).toString('hex');
+ const buf=await scrypt(attrs.password,salt,64)
     const records=await this.getAll()
-  records.push(attrs);
+ const record={
+    
+        ...attrs,     //create new object with updating new properties along with existing
+        password:`${buf.toString('hex')}.${salt}`
+    
+ }
+    records.push(record);
   //write the updated 'records' array back to this.filename
   await this.writeAall(records);
-  return attrs;  //return oject of users we made
+  
+  return record;  //return record of hash and salted password
 }
 async writeAall(records){
     await fs.promises.writeFile(this.filename,JSON.stringify(records,null,2)) //third arg is the no of lines to diaplay is in users.json

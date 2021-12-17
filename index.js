@@ -76,7 +76,7 @@ req.session.userId=user.id;  //added by cookie session
       return res.send('Email not Found')
   } 
 
-  const validPassword=await user.confirmPassword(
+  const validPassword=await userRepo.comparePasswords(
       user.password,
       password
   )

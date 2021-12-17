@@ -46,6 +46,19 @@ async create(attrs){        //object of data-{email:'',password:''}
   
   return record;  //return record of hash and salted password
 }
+
+//compare passwords
+async comparePasswords(saved,supplied){
+//saved-> pw saved in our database -> 'hashed.salt'
+//supplied- pw given to us by user trying to sigin
+const [hashed,salt]=saved.split('.')    //split into hashed pw and salt
+const hashedSuppliedBuf=await scrypt(supplied,salt,64)
+//comparison
+return hashed===hashedSuppliedBuf.toString('hex');   //hashsupplied is a buffer so need to convert
+
+
+}
+
 async writeAall(records){
     await fs.promises.writeFile(this.filename,JSON.stringify(records,null,2)) //third arg is the no of lines to diaplay is in users.json
 

@@ -4,6 +4,7 @@ const bodyParser=require('body-parser')  //midleware library
 const cookieSession=require('cookie-session')
 const userRepo=require('./repositories/users');
 const res = require('express/lib/response');
+const { use } = require('express/lib/router');
 
 
  //app is a object that describes all the web functions a server can do
@@ -69,12 +70,17 @@ req.session.userId=user.id;  //added by cookie session
  });
 
  app.post('/signin',async(req,res)=>{
-  const {email,password}=req.body;
+  const {email,password}=req.body;  //req.body have all the info inside form
   const user=await userRepo.getOneBy({email});    //to find an existing email in database
   if(!user){
       return res.send('Email not Found')
   } 
-  if(user.password!==password){
+
+  const validPassword=await user.confirmPassword(
+      user.password,
+      password
+  )
+  if(!validPassword){
       return res.send('Invalid Paasword!')
   }
   req.session.userId=user.id;  //user authenticated

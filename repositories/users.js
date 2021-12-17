@@ -26,10 +26,12 @@ async getAll(){
 }
 async create(attrs){        //object of data
  attrs.id=this.randomId();
+
     const records=await this.getAll()
   records.push(attrs);
   //write the updated 'records' array back to this.filename
-  await this.writeAall(records)
+  await this.writeAall(records);
+  return attrs;  //return oject of users we made
 }
 async writeAall(records){
     await fs.promises.writeFile(this.filename,JSON.stringify(records,null,2)) //third arg is the no of lines to diaplay is in users.json

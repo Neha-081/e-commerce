@@ -1,6 +1,20 @@
 [
-    {
-        "email":"neha@gmail.com"
-        
-    }
+  {
+    "email": "neha@gmail.com"
+  },
+  {
+    "email": "abhishek@gmail.com",
+    "password": "123",
+    "id": "ab62fd8d"
+  },
+  {
+    "email": "kanak@gmail.com",
+    "password": "741",
+    "id": "c128a636"
+  },
+  {
+    "email": "z@z.com",
+    "password": "123",
+    "id": "173723f0"
+  }
 ]

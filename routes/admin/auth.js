@@ -13,10 +13,14 @@ router.get('/signup',(req,res)=>{
 //data need to be parsed
 
 //validation
-router.post('/signup',[requireEmail,requirePassword,requireConfirmpw],
+router.post('/signup',
+[requireEmail,requirePassword,requireConfirmpw],
 async(req,res)=>{
 const errors=validationResult(req)
-console.log(errors);
+if(!errors.isEmpty()){
+    return res.send(signupTemplate({req,errors}))
+}
+
 const {email,password,confirmPassword}=req.body;
 
 //create a user id our user repo to represent this person

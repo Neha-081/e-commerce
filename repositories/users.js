@@ -1,6 +1,5 @@
 const fs = require('fs')
 const crypto=require('crypto');
-const { timeStamp } = require('console');
 const util=require('util')
 
 const scrypt=util.promisify(crypto.scrypt)  //returns a promise
@@ -74,7 +73,7 @@ async getOne(id){   //find user by particular id
 async delete(id){
     const records=await this.getAll();
     const filterRecords=records.filter(record=>record.id!==id);
-   await this.writeAall(filterRecords);
+   await this.writeAll(filterRecords);
 }
 async update(id,attrs){
     const records=await this.getAll();

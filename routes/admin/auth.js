@@ -1,10 +1,10 @@
 const express=require('express')
 const {check,validationResult}=require('express-validator')
 const userRepo=require('../../repositories/users')
-const router=express.Router();
 const signupTemplate=require('../../views/admin/auth/signup')
 const signinTemplate=require('../../views/admin/auth/signin')
-const {requireEmail,requirePassword,requireConfirmpw}=require('./validator')
+const {requireEmail,requirePassword,requireConfirmpw, requireEmailExist, requirePasswordExist}=require('./validator')
+const router=express.Router();
 
 router.get('/signup',(req,res)=>{
     res.send(signupTemplate({req}))
@@ -14,7 +14,7 @@ router.get('/signup',(req,res)=>{
 
 //validation
 router.post('/signup',
-[requireEmail,requirePassword,requireConfirmpw],
+[requireEmail,requirePassword,requireConfirmpw,requireEmailExist,requirePasswordExist],
 async(req,res)=>{
 const errors=validationResult(req)
 if(!errors.isEmpty()){
@@ -38,23 +38,22 @@ router.get('/signout',(req,res)=>{
 });
 
 router.get('/signin',(req,res)=>{
-res.send(signinTemplate())
+res.send(signinTemplate({}));   //to get no errors
 });
 
-router.post('/signin',async(req,res)=>{
- const {email,password}=req.body;  //req.body have all the info inside form
- const user=await userRepo.getOneBy({email});    //to find an existing email in database
- if(!user){
-     return res.send('Email not Found')
- } 
+router.post('/signin',[requirePassword,
+requireConfirmpw],
+async(req,res)=>{
 
- const validPassword=await userRepo.comparePasswords(
-     user.password,
-     password
- )
- if(!validPassword){
-     return res.send('Invalid Paasword!')
- }
+    const errors=validationResult(req);
+    if(!errors.isEmpty()){
+        return res.send(signinTemplate({errors}))
+    }
+
+ const {email}=req.body;  //req.body have all the info inside form
+ const user=await userRepo.getOneBy({email});    //to find an existing email in database
+
+
  req.session.userId=user.id;  //user authenticated
 res.send('You are signed in')
 });

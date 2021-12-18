@@ -1,4 +1,5 @@
 const express=require('express')
+const {check,validationResult}=require('express-validator')
 const userRepo=require('../../repositories/users')
 const router=express.Router();
 const signupTemplate=require('../../views/admin/auth/signup')
@@ -11,8 +12,17 @@ router.get('/signup',(req,res)=>{
 //data need to be parsed
 
 
-router.post('/signup',async(req,res)=>{
+router.post('/signup',[
+    //validation
+check('email').trim().normalizeEmail().isEmail(),
+check('password').trim().isLength({min:4,max:20}),
+check('confirmPassword').trim().isLength({min:4,max:20})
+],
+async(req,res)=>{
+const errors=validationResult(req)
+console.log(errors);
 const {email,password,confirmPassword}=req.body;
+
 const existingUser=await userRepo.getOneBy({email})  
 if(existingUser){
     return res.send('Email already exists!')

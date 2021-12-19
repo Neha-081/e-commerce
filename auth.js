@@ -7,9 +7,9 @@ const signinTemplate = require('../../views/admin/auth/signin');
 const {
   requireEmail,
   requirePassword,
-  requirePasswordConfirmation,
-  requireEmailExists,
-  requireValidPasswordForUser
+ requireConfirmpw,
+  requireEmailExist,
+  requirePasswordExist
 } = require('./validators');
 
 const router = express.Router();
@@ -20,7 +20,7 @@ router.get('/signup', (req, res) => {
 
 router.post(
   '/signup',
-  [requireEmail, requirePassword, requirePasswordConfirmation],
+  [requireEmail, requirePassword,requireConfirmpw],
   async (req, res) => {
     const errors = validationResult(req);
 
@@ -28,7 +28,7 @@ router.post(
       return res.send(signupTemplate({ req, errors }));
     }
 
-    const { email, password, passwordConfirmation } = req.body;
+    const { email, password } = req.body;
     const user = await usersRepo.create({ email, password });
 
     req.session.userId = user.id;
@@ -43,15 +43,17 @@ router.get('/signout', (req, res) => {
 });
 
 router.get('/signin', (req, res) => {
-  res.send(signinTemplate());
+  res.send(signinTemplate({}));
 });
 
 router.post(
   '/signin',
-  [requireEmailExists, requireValidPasswordForUser],
+  [requireEmailExist, requirePasswordExist],
   async (req, res) => {
     const errors = validationResult(req);
-    console.log(errors);
+   if(!errors.isEmpty()){
+     return res.send(signinTemplate({errors}))
+   }
 
     const { email } = req.body;
 

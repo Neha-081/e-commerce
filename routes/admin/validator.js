@@ -1,5 +1,5 @@
 const {check}=require('express-validator');
-const userRepo=require('../../repositories/users')
+const usersRepo=require('../../repositories/users')
 
 module.exports={
     
@@ -21,7 +21,7 @@ requirePrice:check('price')
     .isEmail()
     .withMessage('Must be a valid email')
     .custom(async(email)=>{
-      const existingUser=await userRepo.getOneBy({email})  
+      const existingUser=await usersRepo.getOneBy({email})  
       if(existingUser){
       throw new Error('Email in Use!')
       }
@@ -46,8 +46,8 @@ requirePrice:check('price')
      .normalizeEmail()
      .isEmail()
      .withMessage('Must provide a valid email')
-     .custom(async(error)=>{
-         const user = await userRepo.getOneBy({email});
+     .custom(async email=>{
+         const user = await usersRepo.getOneBy({email});
          if(!user){
              throw new Error('Email not found')
          }
@@ -55,11 +55,11 @@ requirePrice:check('price')
      requirePasswordExist:check('password')
      .trim()
      .custom(async(password,{req})=>{
-         const user=await userRepo.getOneBy({email:req.body.email})
+         const user=await usersRepo.getOneBy({email:req.body.email})
          if(!user){
              throw new Error('Invalid Password')
          }
-         const validPassword=await userRepo.comparePasswords(
+         const validPassword=await usersRepo.comparePasswords(
              user.password,
              password
          )

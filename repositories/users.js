@@ -10,7 +10,7 @@ class UsersRepository extends Repository{
  async comparePasswords(saved,supplied){
     //saved-> pw saved in our database -> 'hashed.salt'
     //supplied- pw given to us by user trying to sigin
-    const [hashed,salt]=saved.split('.')    //split into hashed pw and salt
+    const [hashed,salt]=saved.split('.');    //split into hashed pw and salt
     const hashedSuppliedBuf=await scrypt(supplied,salt,64)
     //comparison
     return hashed===hashedSuppliedBuf.toString('hex');   //hashsupplied is a buffer so need to convert

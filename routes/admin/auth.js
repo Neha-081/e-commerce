@@ -1,6 +1,6 @@
 const express=require('express')
-const {check,validationResult}=require('express-validator')
-const userRepo=require('../../repositories/users')
+const {handleErrors}=require('./middlewares')
+const usersRepo=require('../../repositories/users')
 const signupTemplate=require('../../views/admin/auth/signup')
 const signinTemplate=require('../../views/admin/auth/signin')
 const {requireEmail,requirePassword,requireConfirmpw, requireEmailExist, requirePasswordExist}=require('./validator')
@@ -14,17 +14,14 @@ router.get('/signup',(req,res)=>{
 
 //validation
 router.post('/signup',
-[requireEmail,requirePassword,requireConfirmpw,requireEmailExist,requirePasswordExist],
+[requireEmail,requirePassword,requireConfirmpw],
+handleErrors(signupTemplate),
 async(req,res)=>{
-const errors=validationResult(req)
-if(!errors.isEmpty()){
-    return res.send(signupTemplate({req,errors}))
-}
 
-const {email,password,confirmPassword}=req.body;
+const {email,password}=req.body;
 
 //create a user id our user repo to represent this person
-const user=await userRepo.create({email,password});
+const user=await usersRepo.create({email,password});
 
 //store the id of that user inside the users cookie
 req.session.userId=user.id;  //added by cookie session
@@ -43,15 +40,10 @@ res.send(signinTemplate({}));   //to get no errors
 
 router.post('/signin',[requirePassword,
 requireConfirmpw],
+handleErrors(signinTemplate),
 async(req,res)=>{
-
-    const errors=validationResult(req);
-    if(!errors.isEmpty()){
-        return res.send(signinTemplate({errors}))
-    }
-
  const {email}=req.body;  //req.body have all the info inside form
- const user=await userRepo.getOneBy({email});    //to find an existing email in database
+ const user=await usersRepo.getOneBy({email});    //to find an existing email in database
 
 
  req.session.userId=user.id;  //user authenticated

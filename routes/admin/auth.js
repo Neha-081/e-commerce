@@ -26,7 +26,7 @@ const user=await usersRepo.create({email,password});
 //store the id of that user inside the users cookie
 req.session.userId=user.id;  //added by cookie session
 
-res.send('Account Created')
+res.redirect('/admin/products')
 });
 
 router.get('/signout',(req,res)=>{
@@ -47,7 +47,7 @@ async(req,res)=>{
 
 
  req.session.userId=user.id;  //user authenticated
-res.send('You are signed in')
+ res.redirect('/admin/products')
 });
 
 module.exports=router;

@@ -2,6 +2,16 @@ const {check}=require('express-validator');
 const userRepo=require('../../repositories/users')
 
 module.exports={
+requireTitle:check('title')
+    .trim()
+    .isLength({min:5,max:40})
+,
+requirePrice:check('price')
+    .trim()
+    .toFloat()   //convert string to number,number with decimal
+    .isFloat({min:1})  //min value of rs 1  
+,
+    
     requireEmail: check('email')
     .trim()
     .normalizeEmail()

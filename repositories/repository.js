@@ -20,7 +20,8 @@ async create(attrs){
 
   const records=await this.getAll();
   records.push(attrs);
-  await this.writeAll
+  await this.writeAll(records)
+  return attrs;
 }
 
  async getAll(){
@@ -61,7 +62,6 @@ async create(attrs){
  
      Object.assign(record,attrs)  //take all key value pairs from attrs and add them in record with existing keyvalue of that id
  await this.writeAll(records)
-return attrs; 
 }
  async getOneBy(filters){
    const records=await this.getAll();

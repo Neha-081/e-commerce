@@ -4,9 +4,9 @@ const {getError}=require('../../helpers')
 module.exports=({exports})=>{
     return layout({
         content:`
-        <form method='POST'>
+        <form method='POST' enctype="multipart/form-data">
         <input placeholder='title' name='title'/>
-        <input placeholdeer='price' name='price'/>
+        <input placeholder='price' name='price'/>
         <input type='file' name='image'/>
         <button>Submit</button>
         </form>

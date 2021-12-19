@@ -11,6 +11,7 @@ const productsRouter=require('./routes/admin/products')
 
  //urlencoded-function within the library bodyparser which 
 //use for handling specific info that is coming as htnl form
+//bodyparser cares only about urlencoded i.e-default enctype
  app.use(bodyParser.urlencoded({extended:true}))
  app.use(cookieSession({
  keys:['mayanehaprajapati']  //used to encrypt all the info store inside the cookie 

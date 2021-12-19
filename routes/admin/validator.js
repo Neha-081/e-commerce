@@ -5,12 +5,14 @@ module.exports={
 requireTitle:check('title')
     .trim()
     .isLength({min:5,max:40})
-,
+    .withMessage('MUst be between 5 and 40 characters')
+    ,
 requirePrice:check('price')
     .trim()
     .toFloat()   //convert string to number,number with decimal
     .isFloat({min:1})  //min value of rs 1  
-,
+    .withMessage('Must be a number and greater than 1')
+    ,
     
     requireEmail: check('email')
     .trim()

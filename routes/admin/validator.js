@@ -1,70 +1,65 @@
-const {check}=require('express-validator');
-const usersRepo=require('../../repositories/users')
+const { check } = require('express-validator');
+const usersRepo = require('../../repositories/users');
 
-module.exports={
-    
-requireTitle:check('title')
+module.exports = {
+  requireTitle: check('title')
     .trim()
-    .isLength({min:5,max:40})
-    .withMessage('MUst be between 5 and 40 characters')
-    ,
-requirePrice:check('price')
+    .isLength({ min: 5, max: 40 })
+    .withMessage('Must be between 5 and 40 characters'),
+  requirePrice: check('price')
     .trim()
-    .toFloat()   //convert string to number,number with decimal
-    .isFloat({min:1})  //min value of rs 1  
-    .withMessage('Must be a number and greater than 1')
-    ,
-    
-    requireEmail: check('email')
+    .toFloat()
+    .isFloat({ min: 1 })
+    .withMessage('Must be a number greater than 1'),
+  requireEmail: check('email')
     .trim()
     .normalizeEmail()
     .isEmail()
     .withMessage('Must be a valid email')
-    .custom(async(email)=>{
-      const existingUser=await usersRepo.getOneBy({email})  
-      if(existingUser){
-      throw new Error('Email in Use!')
+    .custom(async email => {
+      const existingUser = await usersRepo.getOneBy({ email });
+      if (existingUser) {
+        throw new Error('Email in use');
       }
-  
     }),
-    requirePassword:check('password')
+  requirePassword: check('password')
     .trim()
-    .isLength({min:4,max:20})
+    .isLength({ min: 4, max: 20 })
     .withMessage('Must be between 4 and 20 characters'),
-
-    requireConfirmpw:check('confirmPassword')
+  requireConfirmpw: check('passwordConfirmation')
     .trim()
-    .isLength({min:4,max:20})
+    .isLength({ min: 4, max: 20 })
     .withMessage('Must be between 4 and 20 characters')
-    .custom((confirmPassword,{req})=>{
-      if(confirmPassword!==req.body.password){
-          throw new Error('Passwords must match!')
+    .custom(async (passwordConfirmation, { req }) => {
+      if (passwordConfirmation !== req.body.password) {
+        throw new Error('Passwords must match');
       }
-     }),
-     requireEmailExist:check('email')
-     .trim()
-     .normalizeEmail()
-     .isEmail()
-     .withMessage('Must provide a valid email')
-     .custom(async email=>{
-         const user = await usersRepo.getOneBy({email});
-         if(!user){
-             throw new Error('Email not found')
-         }
-     }),
-     requirePasswordExist:check('password')
-     .trim()
-     .custom(async(password,{req})=>{
-         const user=await usersRepo.getOneBy({email:req.body.email})
-         if(!user){
-             throw new Error('Invalid Password')
-         }
-         const validPassword=await usersRepo.comparePasswords(
-             user.password,
-             password
-         )
-         if(!validPassword){
-             throw new Error('Invalid password')
-         }
-     })
-}
+    }),
+  requireEmailExist: check('email')
+    .trim()
+    .normalizeEmail()
+    .isEmail()
+    .withMessage('Must provide a valid email')
+    .custom(async email => {
+      const user = await usersRepo.getOneBy({ email });
+      if (!user) {
+        throw new Error('Email not found!');
+      }
+    }),
+  requirePasswordExist: check('password')
+    .trim()
+    .custom(async (password, { req }) => {
+      const user = await usersRepo.getOneBy({ email: req.body.email });
+      if (!user) {
+        throw new Error('Invalid password');
+      }
+
+      const validPassword = await usersRepo.comparePasswords(
+        user.password,
+        password
+      );
+      if (!validPassword) {
+        throw new Error('Invalid password');
+      }
+    })
+};

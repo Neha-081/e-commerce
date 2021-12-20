@@ -3,7 +3,12 @@ const {handleErrors}=require('./middlewares')
 const usersRepo=require('../../repositories/users')
 const signupTemplate=require('../../views/admin/auth/signup')
 const signinTemplate=require('../../views/admin/auth/signin')
-const {requireEmail,requirePassword,requireConfirmpw, requireEmailExist, requirePasswordExist}=require('./validator')
+const {requireEmail,
+    requirePassword,
+    requireConfirmpw,
+     requireEmailExist, 
+     requirePasswordExist
+    }=require('./validator')
 const req = require('express/lib/request')
 const router=express.Router();
 

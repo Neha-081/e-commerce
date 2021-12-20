@@ -4,6 +4,7 @@ const usersRepo=require('../../repositories/users')
 const signupTemplate=require('../../views/admin/auth/signup')
 const signinTemplate=require('../../views/admin/auth/signin')
 const {requireEmail,requirePassword,requireConfirmpw, requireEmailExist, requirePasswordExist}=require('./validator')
+const req = require('express/lib/request')
 const router=express.Router();
 
 router.get('/signup',(req,res)=>{
@@ -38,8 +39,7 @@ router.get('/signin',(req,res)=>{
 res.send(signinTemplate({}));   //to get no errors
 });
 
-router.post('/signin',[requirePassword,
-requireConfirmpw],
+router.post('/signin',[requireEmailExist,requirePasswordExist],
 handleErrors(signinTemplate),
 async(req,res)=>{
  const {email}=req.body;  //req.body have all the info inside form

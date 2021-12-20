@@ -5,7 +5,9 @@ const {handleErrors,requireAuth}=require('./middlewares')
 const productsRepo = require('../../repositories/products');
 const productsNewTemplate = require('../../views/admin/products/new');
 const productsIndexTemplate=require('../../views/admin/products/index')
+const productsEditTemplate=require('../../views/admin/products/edit')
 const { requireTitle, requirePrice } = require('./validator');
+const req = require('express/lib/request');
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -36,5 +38,17 @@ router.post(
     res.redirect('/admin/products')
   }
 );
+
+router.get('/admin/products/:id/edit',async(req,res)=>{
+  //editing the input
+  const product = await productsRepo.getOne(req.params.id)
+  //if id not founf in any of existing id
+  if(!product){
+    return res.send('product not found')
+
+  }
+  res.send(productsEditTemplate({product}))
+
+})
 
 module.exports = router;

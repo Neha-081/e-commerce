@@ -51,7 +51,7 @@ async(req,res)=>{
  const user=await usersRepo.getOneBy({email});    //to find an existing email in database
 
 
- req.session.userId=user.id;  //user authenticated
+ req.session.userId=user.id;  //user authenticated,cookie returns req.session.userId when user signs in
  res.redirect('/admin/products')
 });
 

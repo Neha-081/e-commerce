@@ -1,4 +1,5 @@
 const express=require('express');
+const req = require('express/lib/request');
 const cartsRepo=require('../repositories/carts')
 const productsRepo=require('../repositories/products')
 const cartShowTemplate=require('../views/carts/show')
@@ -34,12 +35,8 @@ router.post('/cart/products',async(req,res)=>{
  });
 
     //either increment quantity for existing product
-    
-    
     //or add new product to items array 
-    
-
-    res.send("product id")
+    res.redirect('/')
 })
 
 //receive a get req to show all items in cart
@@ -58,7 +55,12 @@ router.get('/cart',async(req,res)=>{
 })
 //receive a post req to delete a item from a cart
 router.post('/cart/products/delete',async(req,res)=>{
-    console.log(req.body.itemId);
+ const {itemId}=req.body;
+ const cart=await cartsRepo.getOne(req.session.cartId);
+ const items=cart.items.filter(item=>item.id!==itemId);
+ await cartsRepo.update(req.session.cartId,{items});
+ res.redirect('/cart')
+
 })
 
 module.exports=router;

@@ -4,6 +4,7 @@ const cookieSession=require('cookie-session')
 const authRouter=require('./routes/admin/auth')
 const adminProductsRouter=require('./routes/admin/products')
 const productsRouter=require('./routes/products')
+const cartsRouter=require('./routes/carts')
 
  //app is a object that describes all the web functions a server can do
  const app=express();
@@ -21,6 +22,7 @@ const productsRouter=require('./routes/products')
  app.use(authRouter)
  app.use(adminProductsRouter)
  app.use(productsRouter)
+ app.use(cartsRouter)
  
 
  app.listen(3000,()=>{

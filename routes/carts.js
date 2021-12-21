@@ -1,5 +1,7 @@
 const express=require('express');
 const cartsRepo=require('../repositories/carts')
+const productsRepo=require('../repositories/products')
+const cartShowTemplate=require('../views/carts/show')
 const router=express.Router();
 //receive a post req to add an item to a cart
 //getting product id by clicking on add to cart
@@ -42,6 +44,18 @@ router.post('/cart/products',async(req,res)=>{
 
 //receive a get req to show all items in cart
 
+router.get('/cart',async(req,res)=>{
+    if(!req.session.cartId){
+        return res.redirect('/')
+    }
+    const cart = await cartsRepo.getOne(req.session.cartId);
+    for(let item of cart.items){
+        //item==={if:,quantity}
+  const product =await productsRepo.getOne(item.id);
+  item.product=product;
+    }
+    res.send(cartShowTemplate({items:cart.items}))
+})
 //receive a post req to delete a item from a cart
 
 

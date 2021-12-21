@@ -2,7 +2,8 @@ const express = require('express')
 const bodyParser=require('body-parser')  //midleware library
 const cookieSession=require('cookie-session')
 const authRouter=require('./routes/admin/auth')
-const productsRouter=require('./routes/admin/products')
+const adminProductsRouter=require('./routes/admin/products')
+const productsRouter=require('./routes/products')
 
  //app is a object that describes all the web functions a server can do
  const app=express();
@@ -18,6 +19,7 @@ const productsRouter=require('./routes/admin/products')
  }));
 
  app.use(authRouter)
+ app.use(adminProductsRouter)
  app.use(productsRouter)
  
 

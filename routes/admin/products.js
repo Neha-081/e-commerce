@@ -55,14 +55,17 @@ router.post('/admin/products/:id/edit',
 requireAuth,
 upload.single('image'),       //name must be same i.e-image as form name
 [requireTitle,requirePrice],
-handleErrors(productsEditTemplate),
+handleErrors(productsEditTemplate,async(req)=>{      //second argue works only when reuire validation above its doesnt work
+ const product=await productsRepo.getOne(req.params.id);
+ return {product};  //return the same product name if input remains empty
+}),
 async(req,res)=>{
   const changes=req.body;  //updated title and price
 if(req.file){
   changes.image=req.file.buffer.toString('base64');
 }
 try{
-await productsRepo.update(req.params.id,changes);
+await productsRepo.update(req.params.id,changes);  //updating new values
 }catch(err){
   return res.send('could not find item')
 }

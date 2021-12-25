@@ -12,17 +12,17 @@ module.exports = ({ content }) => {
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css"></link>
       </head>
 
-      <body>
+      <body id="productFile">
         <header>
           <nav class="navbar navbar-top">
             <div class="container navbar-container">
               <div>
                 <ul class="social">
                   <li>
-                    <a href=""><i class="fa fa-phone"></i>+1 555 987 6543</a>
+                    <a href=""><i class="fa fa-phone"></i>+91 6656489633</a>
                   </li>
                   <li>
-                    <a href=""><i class="fa fa-envelope"></i> shop@myshop.com</a>
+                    <a href=""><i class="fa fa-envelope"></i> beautify@beauty.com</a>
                   </li>
                 </ul>
               </div>
@@ -41,13 +41,13 @@ module.exports = ({ content }) => {
             <div class="container navbar-container">
               <div>
                 <a href="/">
-                  <h3 class="title">EComm Shop</h3>
+                  <h3 class="title">BEAUTIFY Shop</h3>
                 </a>
               </div>
               <div class="navbar-item">
                 <div class="navbar-buttons">
                   <div class="navbar-item">
-                    <a href="/"><i class="fa fa-star"></i> Products</a>
+                    <a href="/signup"><i class="fa fa-star"></i>Add Products</a>
                   </div>
                   <div class="navbar-item">
                     <a href="/cart"><i class="fa fa-shopping-cart"></i> Cart</a>

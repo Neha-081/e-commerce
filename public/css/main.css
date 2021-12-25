@@ -5,6 +5,9 @@ body {
   --dark: #2e2532;
   --black: #201a23;
 }
+a{
+  text-decoration: none;
+}
 
 .product-card figure {
   text-align: center;
@@ -143,4 +146,9 @@ body {
 .cart-right {
   display: flex;
   align-items: center;
+}
+#productFile{
+  background-color: #f3f3f3;
+}#signupbtn{
+  color: white !important;
 }

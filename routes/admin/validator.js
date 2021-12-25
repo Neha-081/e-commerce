@@ -4,8 +4,8 @@ const usersRepo = require('../../repositories/users');
 module.exports = {
   requireTitle: check('title')
     .trim()
-    .isLength({ min: 5, max: 40 })
-    .withMessage('Must be between 5 and 40 characters'),
+    .isLength({ min: 5, max: 80 })
+    .withMessage('Must be between 5 and 80 characters'),
   requirePrice: check('price')
     .trim()
     .toFloat()

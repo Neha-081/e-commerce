@@ -1,3 +1,4 @@
+
 body {
   --primary: #631d76;
   --secondary: #9e4770;
@@ -65,9 +66,10 @@ a{
   margin-bottom: 10px;
   padding: 20px;
 }.card{
-  height: 500px;
+  height: 450px;
+  border-radius: 15px;
 }.card-content{
-  height: 200px;
+  height: 150px;
 }
 
 .product-card .card-footer {
@@ -107,6 +109,10 @@ a{
   border: none;
   width: 100%;
   height: 50px;
+  color: #fbfbfb;
+  background-color: #3d3b3f ;
+}.product-card .card-footer button:hover{
+  background-color:#201a23;
 }
 
 .product-card .card-footer button i {
@@ -143,16 +149,20 @@ a{
   margin-bottom: 0 !important;
 }
 
-.price {
-  margin: 0 20px;
-}
+
 
 .cart-right {
   display: flex;
   align-items: center;
 }
 #productFile{
-  background-color: #f3f3f3;
+  background-color: #948e8e;
 }#signupbtn{
   color: white !important;
+}.cart-footer{
+  background-color: #201a23;
+}.price{
+  font-weight: bold;
+  font-size: 20px;
+  margin: 0 0 10px 20px;
 }

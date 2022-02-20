@@ -9,7 +9,7 @@ Full fledged E-commerce platform for beauty products built with the Express, Jav
 ![jsmovie](https://user-images.githubusercontent.com/87421798/153025176-9862fbda-07cf-4aab-9e22-89752b393bdd.png)
 
 
-- Shopping Cart
+- Shopping Cart Page
 
 
 ![jscart](https://user-images.githubusercontent.com/87421798/153025174-cc70c1a7-a4cf-4709-931c-3304dcdd5e15.png)
